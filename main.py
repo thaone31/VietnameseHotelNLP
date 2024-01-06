@@ -400,7 +400,7 @@ def build_ensemble_model(model_LSTM, model_CNN):
     cnn_selected = cnn_predictions[:, :5]
 
     # Concatenate the selected predictions
-    concatenated_predictions = Concatenate()([lstm_selected, cnn_selected])
+    concatenated_predictions = concatenate()([lstm_selected, cnn_selected])
 
     # Calculate the average of concatenated predictions
     ensemble_predictions = Dense(5, activation='softmax')(concatenated_predictions)
@@ -457,7 +457,7 @@ def build_ensemble_model(model_BiLSTM, model_CNN):
     cnn_predictions = model_CNN([title_input, text_input])
 
     # Concatenate the predictions
-    concatenated_predictions = Concatenate()([lstm_predictions, cnn_predictions])
+    concatenated_predictions = concatenate()([lstm_predictions, cnn_predictions])
 
     # Add a dense layer
     dense_layer = Dense(64, activation='relu')(concatenated_predictions)
