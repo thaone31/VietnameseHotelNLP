@@ -46,8 +46,8 @@ vocab = Dictionary()
 vocab.add_from_file("./PhoBERT_base_transformers/dict.txt")
 
 # lấy đường dẫn của file Train và file Test
-path_train = 'Bản sao của train.xlsx'
-path_test = 'Bản sao của test.xlsx'
+path_train = "./Bản sao của train.xlsx"
+path_test = "./Bản sao của test.xlsx"
 
 import os
 import pandas as pd
