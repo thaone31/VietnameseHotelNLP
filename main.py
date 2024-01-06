@@ -47,8 +47,8 @@ vocab = Dictionary()
 vocab.add_from_file("./PhoBERT_base_transformers/dict.txt")
 
 # lấy đường dẫn của file Train và file Test
-path_train = os.path.abspath("Bản sao của train.xlsx")
-path_test = os.path.abspath("Bản sao của test.xlsx")
+path_train = os.path.abspath('Bản sao của train.xlsx')
+path_test = os.path.abspath('Bản sao của test.xlsx')
 
 # Function to read an xlsx file
 # Input: file path
