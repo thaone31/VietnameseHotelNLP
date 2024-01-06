@@ -206,8 +206,6 @@ model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
 model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_LSTM.summary()
 
-plot_model(model_LSTM, to_file='model.png', show_shapes=True, show_layer_names=True)
-
 model_LSTM_history = model_LSTM.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
     y_train,
@@ -279,8 +277,6 @@ model_CNN = Model(inputs=[title_input, text_input], outputs=output)
 
 model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_CNN.summary()
-
-plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
 
 def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
     history = model.fit(
@@ -361,7 +357,6 @@ model_BiLSTM.summary()
 
 model_BiLSTM.save_weights('BiLSTM_text_classification.h5')
 
-plot_model(model_BiLSTM, to_file='modelBiLSTM.png', show_shapes=True, show_layer_names=True)
 history = model_BiLSTM.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
     y_train,
@@ -419,7 +414,6 @@ model_ensemble_cnn_lstm = build_ensemble_model(model_LSTM, model_CNN)
 model_ensemble_cnn_lstm.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 model_ensemble_cnn_lstm.summary()
-plot_model(model_ensemble_cnn_lstm, to_file='modelensembleCNNlstm.png', show_shapes=True, show_layer_names=True)
 model_ensemble_cnn_lstm.save_weights('LSTM_CNN_text_classification.h5')
 history = model_ensemble_cnn_lstm.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
@@ -480,7 +474,6 @@ model_ensemble_bilstm_cnn = build_ensemble_model(model_BiLSTM, model_CNN)
 model_ensemble_bilstm_cnn.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_ensemble_bilstm_cnn.summary()
 
-plot_model(model_ensemble_bilstm_cnn, to_file='modelensembleCNNBilstm.png', show_shapes=True, show_layer_names=True)
 model_ensemble_bilstm_cnn.save_weights('BiLSTM_CNN_text_classification.h5')
 history = model_ensemble_bilstm_cnn.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
