@@ -46,11 +46,16 @@ bpe = fastBPE(args)
 vocab = Dictionary()
 vocab.add_from_file("./PhoBERT_base_transformers/dict.txt")
 
-# Lấy đường dẫn thư mục chứa file main.py
 dir_path = os.path.dirname(os.path.abspath(__file__))
-# Xác định đường dẫn tuyệt đối của file Train và file Test
-path_train = os.path.join(dir_path, "Bản sao của train.xlsx")
-path_test = os.path.join(dir_path, "Bản sao của test.xlsx")
+
+# Gọi file Bản sao của train.xlsx
+train_path = os.path.join(dir_path, "Bản sao của train.xlsx")
+train_data = pd.read_excel(train_path)
+
+# Gọi file Bản sao của test.xlsx
+test_path = os.path.join(dir_path, "Bản sao của test.xlsx")
+test_data = pd.read_excel(test_path)
+
 
 # Function to read an xlsx file
 # Input: file path
