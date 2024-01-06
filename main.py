@@ -206,35 +206,35 @@ model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
 model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_LSTM.summary()
 
-model_LSTM_history = model_LSTM.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# model_LSTM_history = model_LSTM.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-# Dự đoán trên tập validation
-val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
+# # Dự đoán trên tập validation
+# val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
-# Chuyển đổi dự đoán về dạng categorical
-val_pred_categorical = np.argmax(val_pred, axis=1)
+# # Chuyển đổi dự đoán về dạng categorical
+# val_pred_categorical = np.argmax(val_pred, axis=1)
 
 # Tính các metrics
-report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
-print(report)
+# report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
+# print(report)
 
-model_LSTM.save_weights('LSTM_text_classification.h5')
-# xây dựng hàm đánh giá
-def test_LSTM(X_test, y_test):
-    y_pred = model_LSTM.predict(X_test)
-    pred = np.argmax(y_pred,axis=1)
+# model_LSTM.save_weights('LSTM_text_classification.h5')
+# # xây dựng hàm đánh giá
+# def test_LSTM(X_test, y_test):
+#     y_pred = model_LSTM.predict(X_test)
+#     pred = np.argmax(y_pred,axis=1)
 
-    print(classification_report(y_test, pred))
+#     print(classification_report(y_test, pred))
 
-# đánh giá trên tập test
-test_LSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
+# # đánh giá trên tập test
+# test_LSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
 # CNN
