@@ -49,12 +49,12 @@ vocab.add_from_file("./PhoBERT_base_transformers/dict.txt")
 dir_path = os.path.dirname(os.path.abspath(__file__))
 
 # Gọi file Bản sao của train.xlsx
-train_path = os.path.join(dir_path, "Bản sao của train.xlsx")
-train_data = pd.read_excel(train_path)
+path_train = os.path.join(dir_path, "Bản sao của train.xlsx")
+train_data = pd.read_excel(path_train)
 
 # Gọi file Bản sao của test.xlsx
-test_path = os.path.join(dir_path, "Bản sao của test.xlsx")
-test_data = pd.read_excel(test_path)
+path_test = os.path.join(dir_path, "Bản sao của test.xlsx")
+test_data = pd.read_excel(path_test)
 
 
 # Function to read an xlsx file
