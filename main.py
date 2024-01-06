@@ -1,3 +1,12 @@
+
+!mkdir -p vncorenlp/models/wordsegmenter
+!wget https://raw.githubusercontent.com/vncorenlp/VnCoreNLP/master/VnCoreNLP-1.1.1.jar
+!wget https://raw.githubusercontent.com/vncorenlp/VnCoreNLP/master/models/wordsegmenter/vi-vocab
+!wget https://raw.githubusercontent.com/vncorenlp/VnCoreNLP/master/models/wordsegmenter/wordsegmenter.rdr
+!mv VnCoreNLP-1.1.1.jar vncorenlp/
+!mv vi-vocab vncorenlp/models/wordsegmenter/
+!mv wordsegmenter.rdr vncorenlp/models/wordsegmenter/
+
 import os
 import torch
 import pickle
@@ -28,7 +37,7 @@ warnings.filterwarnings("ignore")
 
 
 # tạo bộ word segmentation cho tiếng Việt
-rdrsegmenter = VnCoreNLP("VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
+rdrsegmenter = VnCoreNLP("./vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
 
 # load model và bpe lên theo hướng dẫn của PhoBERT
 parser = argparse.ArgumentParser()
