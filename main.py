@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore")
 
 
 # tạo bộ word segmentation cho tiếng Việt
-rdrsegmenter = VnCoreNLP("./vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
+rdrsegmenter = VnCoreNLP("VnCoreNLP-1.1.1.jar", annotators="wseg", max_heap_size='-Xmx500m')
 
 # load model và bpe lên theo hướng dẫn của PhoBERT
 parser = argparse.ArgumentParser()
