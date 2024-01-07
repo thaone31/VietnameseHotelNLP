@@ -20,7 +20,7 @@ from tensorflow.keras.utils import to_categorical
 from transformers import RobertaForSequenceClassification, RobertaConfig, AdamW
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 
-from keras.layers import Input, Embedding, LSTM, Dropout, Dense, concatenate, Conv1D, MaxPooling1D, Flatten, Bidirectional, GlobalMaxPooling1D
+from keras.layers import Input, Embedding, LSTM, Dropout, Dense, concatenate, Conv1D, MaxPooling1D, Flatten, Bidirectional, GlobalMaxPooling1D, Concatenate
 from keras.models import Model
 from keras.utils import plot_model
 
@@ -278,44 +278,44 @@ model_CNN = Model(inputs=[title_input, text_input], outputs=output)
 model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_CNN.summary()
 
-def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
-    history = model.fit(
-        [X_train['title'], X_train['text']],
-        y_train,
-        validation_data=([X_val['title'], X_val['text']], y_val),
-        epochs=epochs,
-        batch_size=batch_size
-    )
-    return history
+# def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
+#     history = model.fit(
+#         [X_train['title'], X_train['text']],
+#         y_train,
+#         validation_data=([X_val['title'], X_val['text']], y_val),
+#         epochs=epochs,
+#         batch_size=batch_size
+#     )
+#     return history
 
-history = model_CNN.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# history = model_CNN.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-# Dự đoán trên tập validation
-val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
+# # Dự đoán trên tập validation
+# val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
-# Chuyển đổi dự đoán về dạng categorical
-val_pred_categorical = np.argmax(val_pred, axis=1)
+# # Chuyển đổi dự đoán về dạng categorical
+# val_pred_categorical = np.argmax(val_pred, axis=1)
 
-# Tính các metrics
-report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
-print(report)
+# # Tính các metrics
+# report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
+# print(report)
 
-# xây dựng hàm đánh giá
-def test_CNN(X_test, y_test):
-    y_pred = model_CNN.predict(X_test)
-    pred = np.argmax(y_pred,axis=1)
+# # xây dựng hàm đánh giá
+# def test_CNN(X_test, y_test):
+#     y_pred = model_CNN.predict(X_test)
+#     pred = np.argmax(y_pred,axis=1)
 
-    print(classification_report(y_test, pred))
+#     print(classification_report(y_test, pred))
 
-# đánh giá trên tập test
-test_CNN([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
+# # đánh giá trên tập test
+# test_CNN([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
 # BiLSTM
@@ -355,34 +355,34 @@ model_BiLSTM = build_bilstm_model()
 model_BiLSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_BiLSTM.summary()
 
-model_BiLSTM.save_weights('BiLSTM_text_classification.h5')
+# model_BiLSTM.save_weights('BiLSTM_text_classification.h5')
 
-history = model_BiLSTM.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
-# Dự đoán trên tập validation
-val_pred = model_BiLSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
+# history = model_BiLSTM.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
+# # Dự đoán trên tập validation
+# val_pred = model_BiLSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
-# Chuyển đổi dự đoán về dạng categorical
-val_pred_categorical = np.argmax(val_pred, axis=1)
+# # Chuyển đổi dự đoán về dạng categorical
+# val_pred_categorical = np.argmax(val_pred, axis=1)
 
-# Tính các metrics
-report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
-print(report)
+# # Tính các metrics
+# report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
+# print(report)
 # xây dựng hàm đánh giá
-def test_BiLSTM(X_test, y_test):
-    y_pred = model_BiLSTM.predict(X_test)
-    pred = np.argmax(y_pred,axis=1)
+# def test_BiLSTM(X_test, y_test):
+#     y_pred = model_BiLSTM.predict(X_test)
+#     pred = np.argmax(y_pred,axis=1)
 
-    print(classification_report(y_test, pred))
+#     print(classification_report(y_test, pred))
 
-# đánh giá trên tập test
-test_BiLSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
+# # đánh giá trên tập test
+# test_BiLSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
 # Ensemble of LSTM+CNN
@@ -400,7 +400,7 @@ def build_ensemble_model(model_LSTM, model_CNN):
     cnn_selected = cnn_predictions[:, :5]
 
     # Concatenate the selected predictions
-    concatenated_predictions = concatenate()([lstm_selected, cnn_selected])
+    concatenated_predictions = Concatenate()([lstm_selected, cnn_selected])
 
     # Calculate the average of concatenated predictions
     ensemble_predictions = Dense(5, activation='softmax')(concatenated_predictions)
@@ -457,7 +457,7 @@ def build_ensemble_model(model_BiLSTM, model_CNN):
     cnn_predictions = model_CNN([title_input, text_input])
 
     # Concatenate the predictions
-    concatenated_predictions = concatenate()([lstm_predictions, cnn_predictions])
+    concatenated_predictions = Concatenate()([lstm_predictions, cnn_predictions])
 
     # Add a dense layer
     dense_layer = Dense(64, activation='relu')(concatenated_predictions)
