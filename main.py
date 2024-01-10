@@ -206,35 +206,39 @@ model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
 model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_LSTM.summary()
 
-model_LSTM_history = model_LSTM.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+from keras.utils import plot_model
 
-# Dự đoán trên tập validation
-val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
+plot_model(model_LSTM, to_file='model.png', show_shapes=True, show_layer_names=True)
 
-# Chuyển đổi dự đoán về dạng categorical
-val_pred_categorical = np.argmax(val_pred, axis=1)
+# model_LSTM_history = model_LSTM.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-#Tính các metrics
-report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
-print(report)
+# # Dự đoán trên tập validation
+# val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
-model_LSTM.save_weights('LSTM_text_classification.h5')
-# xây dựng hàm đánh giá
-def test_LSTM(X_test, y_test):
-    y_pred = model_LSTM.predict(X_test)
-    pred = np.argmax(y_pred,axis=1)
+# # Chuyển đổi dự đoán về dạng categorical
+# val_pred_categorical = np.argmax(val_pred, axis=1)
 
-    print(classification_report(y_test, pred))
+# #Tính các metrics
+# report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
+# print(report)
 
-# đánh giá trên tập test
-test_LSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
+# model_LSTM.save_weights('LSTM_text_classification.h5')
+# # xây dựng hàm đánh giá
+# def test_LSTM(X_test, y_test):
+#     y_pred = model_LSTM.predict(X_test)
+#     pred = np.argmax(y_pred,axis=1)
+
+#     print(classification_report(y_test, pred))
+
+# # đánh giá trên tập test
+# test_LSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
 # CNN
@@ -278,44 +282,46 @@ model_CNN = Model(inputs=[title_input, text_input], outputs=output)
 model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_CNN.summary()
 
-def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
-    history = model.fit(
-        [X_train['title'], X_train['text']],
-        y_train,
-        validation_data=([X_val['title'], X_val['text']], y_val),
-        epochs=epochs,
-        batch_size=batch_size
-    )
-    return history
+plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
 
-history = model_CNN.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
+#     history = model.fit(
+#         [X_train['title'], X_train['text']],
+#         y_train,
+#         validation_data=([X_val['title'], X_val['text']], y_val),
+#         epochs=epochs,
+#         batch_size=batch_size
+#     )
+#     return history
 
-# Dự đoán trên tập validation
-val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
+# history = model_CNN.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-# Chuyển đổi dự đoán về dạng categorical
-val_pred_categorical = np.argmax(val_pred, axis=1)
+# # Dự đoán trên tập validation
+# val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
-# Tính các metrics
-report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
-print(report)
+# # Chuyển đổi dự đoán về dạng categorical
+# val_pred_categorical = np.argmax(val_pred, axis=1)
 
-# xây dựng hàm đánh giá
-def test_CNN(X_test, y_test):
-    y_pred = model_CNN.predict(X_test)
-    pred = np.argmax(y_pred,axis=1)
+# # Tính các metrics
+# report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
+# print(report)
 
-    print(classification_report(y_test, pred))
+# # xây dựng hàm đánh giá
+# def test_CNN(X_test, y_test):
+#     y_pred = model_CNN.predict(X_test)
+#     pred = np.argmax(y_pred,axis=1)
 
-# đánh giá trên tập test
-test_CNN([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
+#     print(classification_report(y_test, pred))
+
+# # đánh giá trên tập test
+# test_CNN([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
 # BiLSTM
@@ -343,7 +349,7 @@ def build_bilstm_model():
     concatenated_pooling = concatenate([title_pooling, text_pooling])
 
     # Dense layer for final prediction
-    output_layer = Dense(5, activation='softmax')(concatenated_pooling)
+    output_layer = Dense(3, activation='softmax')(concatenated_pooling)
 
     # Create model
     model = Model(inputs=[title_input, text_input], outputs=output_layer)
@@ -354,6 +360,8 @@ def build_bilstm_model():
 model_BiLSTM = build_bilstm_model()
 model_BiLSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_BiLSTM.summary()
+
+plot_model(model_BiLSTM, to_file='modelBiLSTM.png', show_shapes=True, show_layer_names=True)
 
 model_BiLSTM.save_weights('BiLSTM_text_classification.h5')
 
@@ -396,14 +404,14 @@ def build_ensemble_model(model_LSTM, model_CNN):
     cnn_predictions = model_CNN([title_input, text_input])
 
     # Select the predictions for labels 1 to 5
-    lstm_selected = lstm_predictions[:, :5]
-    cnn_selected = cnn_predictions[:, :5]
+    lstm_selected = lstm_predictions[:, :3]
+    cnn_selected = cnn_predictions[:, :3]
 
     # Concatenate the selected predictions
     concatenated_predictions = Concatenate()([lstm_selected, cnn_selected])
 
     # Calculate the average of concatenated predictions
-    ensemble_predictions = Dense(5, activation='softmax')(concatenated_predictions)
+    ensemble_predictions = Dense(3, activation='softmax')(concatenated_predictions)
 
     ensemble_model = Model(inputs=[title_input, text_input], outputs=ensemble_predictions)
 
@@ -414,6 +422,8 @@ model_ensemble_cnn_lstm = build_ensemble_model(model_LSTM, model_CNN)
 model_ensemble_cnn_lstm.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 model_ensemble_cnn_lstm.summary()
+plot_model(model_ensemble_cnn_lstm, to_file='modelCNNLSTM.png', show_shapes=True, show_layer_names=True)
+
 model_ensemble_cnn_lstm.save_weights('LSTM_CNN_text_classification.h5')
 history = model_ensemble_cnn_lstm.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
@@ -463,7 +473,7 @@ def build_ensemble_model(model_BiLSTM, model_CNN):
     dense_layer = Dense(64, activation='relu')(concatenated_predictions)
 
     # Add another dense layer for the final output
-    output_layer = Dense(5, activation='softmax')(dense_layer)
+    output_layer = Dense(3, activation='softmax')(dense_layer)
 
     ensemble_model = Model(inputs=[title_input, text_input], outputs=output_layer)
 
@@ -473,6 +483,8 @@ def build_ensemble_model(model_BiLSTM, model_CNN):
 model_ensemble_bilstm_cnn = build_ensemble_model(model_BiLSTM, model_CNN)
 model_ensemble_bilstm_cnn.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_ensemble_bilstm_cnn.summary()
+
+plot_model(model_ensemble_bilstm_cnn, to_file='modelBiLSTMCNN.png', show_shapes=True, show_layer_names=True)
 
 model_ensemble_bilstm_cnn.save_weights('BiLSTM_CNN_text_classification.h5')
 history = model_ensemble_bilstm_cnn.fit(
