@@ -221,7 +221,7 @@ val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 # Chuyển đổi dự đoán về dạng categorical
 val_pred_categorical = np.argmax(val_pred, axis=1)
 
-Tính các metrics
+#Tính các metrics
 report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
 print(report)
 
