@@ -374,7 +374,7 @@ val_pred_categorical = np.argmax(val_pred, axis=1)
 # Tính các metrics
 report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
 print(report)
-xây dựng hàm đánh giá
+#xây dựng hàm đánh giá
 def test_BiLSTM(X_test, y_test):
     y_pred = model_BiLSTM.predict(X_test)
     pred = np.argmax(y_pred,axis=1)
