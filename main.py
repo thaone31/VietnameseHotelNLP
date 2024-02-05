@@ -219,7 +219,7 @@ model_LSTM_history = model_LSTM.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 
-def plot_training_history(history):
+def plot_training_history(history, filename):
     # Lấy giá trị accuracy và loss từ model history
     accuracy = history.history['accuracy']
     loss = history.history['loss']
@@ -236,7 +236,10 @@ def plot_training_history(history):
 
     plt.show()
 
-plot_training_history(model_LSTM_history)
+    # Lưu biểu đồ dưới dạng ảnh
+    plt.savefig(filename)
+
+plot_training_history(model_LSTM_history, LSTM.png)
 # # Dự đoán trên tập validation
 # val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
@@ -321,7 +324,7 @@ history = model_CNN.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 model_CNN.save_weights('CNNClassification.h5')
-plot_training_history(history)
+plot_training_history(history, CNN.png)
 
 # # Dự đoán trên tập validation
 # val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
@@ -394,7 +397,7 @@ history = model_BiLSTM.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 
-plot_training_history(history)
+plot_training_history(history, BiLSTM.png)
 # # Dự đoán trên tập validation
 # val_pred = model_BiLSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
@@ -456,7 +459,7 @@ history = model_ensemble_cnn_lstm.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 
-plot_training_history(history)
+plot_training_history(history, LSTM_CNN.png)
 
 # # Dự đoán trên tập validation
 # val_pred = model_ensemble_cnn_lstm.predict([np.array(val_title_ids), np.array(val_text_ids)])
@@ -519,6 +522,8 @@ history = model_ensemble_bilstm_cnn.fit(
     verbose=1,
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
+
+plot_training_history(history, BiLSTM_CNN.png)
 # # Dự đoán trên tập validation
 # val_pred = model_ensemble_bilstm_cnn.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
