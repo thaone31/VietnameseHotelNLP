@@ -397,7 +397,7 @@ history_BiLSTM = model_BiLSTM.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 
-plot_training_history(history, 'BiLSTM.png')
+plot_training_history(history_BiLSTM, 'BiLSTM.png')
 # # Dự đoán trên tập validation
 # val_pred = model_BiLSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
