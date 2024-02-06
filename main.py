@@ -262,69 +262,69 @@ def plot_training_history(history, filename):
 # test_LSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
-# CNN
-vocab_size = len(vocab)
-embedding_dim = 128
-num_filters = 128
-filter_sizes = [3, 4, 5]
+# # CNN
+# vocab_size = len(vocab)
+# embedding_dim = 128
+# num_filters = 128
+# filter_sizes = [3, 4, 5]
 
-# Input for title
-title_input = Input(shape=(train_title_ids.shape[1],))
-title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
-title_conv_blocks = []
-for filter_size in filter_sizes:
-    title_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(title_embedding)
-    title_pool = MaxPooling1D(pool_size=train_title_ids.shape[1] - filter_size + 1)(title_conv)
-    title_conv_blocks.append(title_pool)
-title_concat = concatenate(title_conv_blocks, axis=-1)
-title_flat = Flatten()(title_concat)
+# # Input for title
+# title_input = Input(shape=(train_title_ids.shape[1],))
+# title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
+# title_conv_blocks = []
+# for filter_size in filter_sizes:
+#     title_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(title_embedding)
+#     title_pool = MaxPooling1D(pool_size=train_title_ids.shape[1] - filter_size + 1)(title_conv)
+#     title_conv_blocks.append(title_pool)
+# title_concat = concatenate(title_conv_blocks, axis=-1)
+# title_flat = Flatten()(title_concat)
 
-# Input for text
-text_input = Input(shape=(train_text_ids.shape[1],))
-text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
-text_conv_blocks = []
-for filter_size in filter_sizes:
-    text_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(text_embedding)
-    text_pool = MaxPooling1D(pool_size=train_text_ids.shape[1] - filter_size + 1)(text_conv)
-    text_conv_blocks.append(text_pool)
-text_concat = concatenate(text_conv_blocks, axis=-1)
-text_flat = Flatten()(text_concat)
+# # Input for text
+# text_input = Input(shape=(train_text_ids.shape[1],))
+# text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
+# text_conv_blocks = []
+# for filter_size in filter_sizes:
+#     text_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(text_embedding)
+#     text_pool = MaxPooling1D(pool_size=train_text_ids.shape[1] - filter_size + 1)(text_conv)
+#     text_conv_blocks.append(text_pool)
+# text_concat = concatenate(text_conv_blocks, axis=-1)
+# text_flat = Flatten()(text_concat)
 
-# Combine the two inputs
-combined = concatenate([title_flat, text_flat])
+# # Combine the two inputs
+# combined = concatenate([title_flat, text_flat])
 
-# Additional layers of the model
-dense1 = Dense(128, activation='relu')(combined)
-output = Dense(y_train.shape[1], activation='softmax')(dense1)
+# # Additional layers of the model
+# dense1 = Dense(128, activation='relu')(combined)
+# output = Dense(y_train.shape[1], activation='softmax')(dense1)
 
-# Build the model
-model_CNN = Model(inputs=[title_input, text_input], outputs=output)
+# # Build the model
+# model_CNN = Model(inputs=[title_input, text_input], outputs=output)
 
-model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model_CNN.summary()
+# model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# model_CNN.summary()
 
-# plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
+# # plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
 
-def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
-    history = model.fit(
-        [X_train['title'], X_train['text']],
-        y_train,
-        validation_data=([X_val['title'], X_val['text']], y_val),
-        epochs=epochs,
-        batch_size=batch_size
-    )
-    return history
+# def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
+#     history = model.fit(
+#         [X_train['title'], X_train['text']],
+#         y_train,
+#         validation_data=([X_val['title'], X_val['text']], y_val),
+#         epochs=epochs,
+#         batch_size=batch_size
+#     )
+#     return history
 
-history_CNN = model_CNN.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
-# model_CNN.save_weights('CNNClassification.h5')
-plot_training_history(history_CNN, 'CNN.png')
+# history_CNN = model_CNN.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
+# # model_CNN.save_weights('CNNClassification.h5')
+# plot_training_history(history_CNN, 'CNN.png')
 
 # # Dự đoán trên tập validation
 # val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
