@@ -179,45 +179,45 @@ vocab_size = len(vocab)
 embedding_dim = 128
 hidden_size = 256
 
-# Đầu vào cho title
-title_input = Input(shape=(train_title_ids.shape[1],))
-title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
-title_lstm = LSTM(hidden_size, return_sequences=True)(title_embedding)
-title_lstm_dropout = Dropout(0.2)(title_lstm)
-title_lstm_final = LSTM(hidden_size)(title_lstm_dropout)
+# # Đầu vào cho title
+# title_input = Input(shape=(train_title_ids.shape[1],))
+# title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
+# title_lstm = LSTM(hidden_size, return_sequences=True)(title_embedding)
+# title_lstm_dropout = Dropout(0.2)(title_lstm)
+# title_lstm_final = LSTM(hidden_size)(title_lstm_dropout)
 
-# Đầu vào cho text
-text_input = Input(shape=(train_text_ids.shape[1],))
-text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
-text_lstm = LSTM(hidden_size, return_sequences=True)(text_embedding)
-text_lstm_dropout = Dropout(0.2)(text_lstm)
-text_lstm_final = LSTM(hidden_size)(text_lstm_dropout)
+# # Đầu vào cho text
+# text_input = Input(shape=(train_text_ids.shape[1],))
+# text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
+# text_lstm = LSTM(hidden_size, return_sequences=True)(text_embedding)
+# text_lstm_dropout = Dropout(0.2)(text_lstm)
+# text_lstm_final = LSTM(hidden_size)(text_lstm_dropout)
 
-# Kết hợp hai đầu vào
-combined = concatenate([title_lstm_final, text_lstm_final])
+# # Kết hợp hai đầu vào
+# combined = concatenate([title_lstm_final, text_lstm_final])
 
-# Các bước còn lại của mô hình
-dense1 = Dense(128, activation='relu')(combined)
-output = Dense(y_train.shape[1], activation='softmax')(dense1)
+# # Các bước còn lại của mô hình
+# dense1 = Dense(128, activation='relu')(combined)
+# output = Dense(y_train.shape[1], activation='softmax')(dense1)
 
-# Xây dựng mô hình
-model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
+# # Xây dựng mô hình
+# model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
 
-model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model_LSTM.summary()
+# model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# model_LSTM.summary()
 
-# from keras.utils import plot_model
+# # from keras.utils import plot_model
 
-# plot_model(model_LSTM, to_file='model.png', show_shapes=True, show_layer_names=True)
+# # plot_model(model_LSTM, to_file='model.png', show_shapes=True, show_layer_names=True)
 
-model_LSTM_history = model_LSTM.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# model_LSTM_history = model_LSTM.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
 def plot_training_history(history, filename):
     # Lấy giá trị accuracy và loss từ model history
@@ -239,7 +239,7 @@ def plot_training_history(history, filename):
     # Lưu biểu đồ dưới dạng ảnh
     plt.savefig(filename)
 
-plot_training_history(model_LSTM_history, 'LSTM.png')
+# plot_training_history(model_LSTM_history, 'LSTM.png')
 # # Dự đoán trên tập validation
 # val_pred = model_LSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
@@ -315,7 +315,7 @@ def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size
     )
     return history
 
-history = model_CNN.fit(
+history_CNN = model_CNN.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
     y_train,
     epochs=EPOCHS,
@@ -324,7 +324,7 @@ history = model_CNN.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 # model_CNN.save_weights('CNNClassification.h5')
-plot_training_history(history, 'CNN.png')
+plot_training_history(history_CNN, 'CNN.png')
 
 # # Dự đoán trên tập validation
 # val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
@@ -388,7 +388,7 @@ model_BiLSTM.summary()
 
 # model_BiLSTM.save_weights('BiLSTM_text_classification.h5')
 
-history = model_BiLSTM.fit(
+history_BiLSTM = model_BiLSTM.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
     y_train,
     epochs=EPOCHS,
@@ -450,7 +450,7 @@ model_ensemble_cnn_lstm.summary()
 # plot_model(model_ensemble_cnn_lstm, to_file='modelCNNLSTM.png', show_shapes=True, show_layer_names=True)
 
 # model_ensemble_cnn_lstm.save_weights('LSTM_CNN_text_classification.h5')
-history = model_ensemble_cnn_lstm.fit(
+history_LSTM_CNN = model_ensemble_cnn_lstm.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
     y_train,
     epochs=EPOCHS,
@@ -459,7 +459,7 @@ history = model_ensemble_cnn_lstm.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 
-plot_training_history(history, 'LSTM_CNN.png')
+plot_training_history(history_LSTM_CNN, 'LSTM_CNN.png')
 
 # # Dự đoán trên tập validation
 # val_pred = model_ensemble_cnn_lstm.predict([np.array(val_title_ids), np.array(val_text_ids)])
@@ -514,7 +514,7 @@ model_ensemble_bilstm_cnn.summary()
 # plot_model(model_ensemble_bilstm_cnn, to_file='modelBiLSTMCNN.png', show_shapes=True, show_layer_names=True)
 
 # model_ensemble_bilstm_cnn.save_weights('BiLSTM_CNN_text_classification.h5')
-history = model_ensemble_bilstm_cnn.fit(
+history_BiLSTM_CNN = model_ensemble_bilstm_cnn.fit(
     [np.array(train_title_ids), np.array(train_text_ids)],
     y_train,
     epochs=EPOCHS,
@@ -523,7 +523,7 @@ history = model_ensemble_bilstm_cnn.fit(
     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
 )
 
-plot_training_history(history, 'BiLSTM_CNN.png')
+plot_training_history(history_BiLSTM_CNN, 'BiLSTM_CNN.png')
 # # Dự đoán trên tập validation
 # val_pred = model_ensemble_bilstm_cnn.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
