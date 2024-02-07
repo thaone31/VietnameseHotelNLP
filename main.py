@@ -179,32 +179,32 @@ vocab_size = len(vocab)
 embedding_dim = 128
 hidden_size = 256
 
-# # Đầu vào cho title
-# title_input = Input(shape=(train_title_ids.shape[1],))
-# title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
-# title_lstm = LSTM(hidden_size, return_sequences=True)(title_embedding)
-# title_lstm_dropout = Dropout(0.2)(title_lstm)
-# title_lstm_final = LSTM(hidden_size)(title_lstm_dropout)
+# Đầu vào cho title
+title_input = Input(shape=(train_title_ids.shape[1],))
+title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
+title_lstm = LSTM(hidden_size, return_sequences=True)(title_embedding)
+title_lstm_dropout = Dropout(0.2)(title_lstm)
+title_lstm_final = LSTM(hidden_size)(title_lstm_dropout)
 
-# # Đầu vào cho text
-# text_input = Input(shape=(train_text_ids.shape[1],))
-# text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
-# text_lstm = LSTM(hidden_size, return_sequences=True)(text_embedding)
-# text_lstm_dropout = Dropout(0.2)(text_lstm)
-# text_lstm_final = LSTM(hidden_size)(text_lstm_dropout)
+# Đầu vào cho text
+text_input = Input(shape=(train_text_ids.shape[1],))
+text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
+text_lstm = LSTM(hidden_size, return_sequences=True)(text_embedding)
+text_lstm_dropout = Dropout(0.2)(text_lstm)
+text_lstm_final = LSTM(hidden_size)(text_lstm_dropout)
 
-# # Kết hợp hai đầu vào
-# combined = concatenate([title_lstm_final, text_lstm_final])
+# Kết hợp hai đầu vào
+combined = concatenate([title_lstm_final, text_lstm_final])
 
-# # Các bước còn lại của mô hình
-# dense1 = Dense(128, activation='relu')(combined)
-# output = Dense(y_train.shape[1], activation='softmax')(dense1)
+# Các bước còn lại của mô hình
+dense1 = Dense(128, activation='relu')(combined)
+output = Dense(y_train.shape[1], activation='softmax')(dense1)
 
-# # Xây dựng mô hình
-# model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
+# Xây dựng mô hình
+model_LSTM = Model(inputs=[title_input, text_input], outputs=output)
 
-# model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# model_LSTM.summary()
+model_LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model_LSTM.summary()
 
 # # from keras.utils import plot_model
 
@@ -262,46 +262,46 @@ def plot_training_history(history, filename):
 # test_LSTM([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
-# # CNN
-# vocab_size = len(vocab)
-# embedding_dim = 128
-# num_filters = 128
-# filter_sizes = [3, 4, 5]
+# CNN
+vocab_size = len(vocab)
+embedding_dim = 128
+num_filters = 128
+filter_sizes = [3, 4, 5]
 
-# # Input for title
-# title_input = Input(shape=(train_title_ids.shape[1],))
-# title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
-# title_conv_blocks = []
-# for filter_size in filter_sizes:
-#     title_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(title_embedding)
-#     title_pool = MaxPooling1D(pool_size=train_title_ids.shape[1] - filter_size + 1)(title_conv)
-#     title_conv_blocks.append(title_pool)
-# title_concat = concatenate(title_conv_blocks, axis=-1)
-# title_flat = Flatten()(title_concat)
+# Input for title
+title_input = Input(shape=(train_title_ids.shape[1],))
+title_embedding = Embedding(vocab_size, embedding_dim, input_length=train_title_ids.shape[1])(title_input)
+title_conv_blocks = []
+for filter_size in filter_sizes:
+    title_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(title_embedding)
+    title_pool = MaxPooling1D(pool_size=train_title_ids.shape[1] - filter_size + 1)(title_conv)
+    title_conv_blocks.append(title_pool)
+title_concat = concatenate(title_conv_blocks, axis=-1)
+title_flat = Flatten()(title_concat)
 
-# # Input for text
-# text_input = Input(shape=(train_text_ids.shape[1],))
-# text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
-# text_conv_blocks = []
-# for filter_size in filter_sizes:
-#     text_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(text_embedding)
-#     text_pool = MaxPooling1D(pool_size=train_text_ids.shape[1] - filter_size + 1)(text_conv)
-#     text_conv_blocks.append(text_pool)
-# text_concat = concatenate(text_conv_blocks, axis=-1)
-# text_flat = Flatten()(text_concat)
+# Input for text
+text_input = Input(shape=(train_text_ids.shape[1],))
+text_embedding = Embedding(vocab_size, embedding_dim, input_length=train_text_ids.shape[1])(text_input)
+text_conv_blocks = []
+for filter_size in filter_sizes:
+    text_conv = Conv1D(filters=num_filters, kernel_size=filter_size, activation='relu')(text_embedding)
+    text_pool = MaxPooling1D(pool_size=train_text_ids.shape[1] - filter_size + 1)(text_conv)
+    text_conv_blocks.append(text_pool)
+text_concat = concatenate(text_conv_blocks, axis=-1)
+text_flat = Flatten()(text_concat)
 
-# # Combine the two inputs
-# combined = concatenate([title_flat, text_flat])
+# Combine the two inputs
+combined = concatenate([title_flat, text_flat])
 
-# # Additional layers of the model
-# dense1 = Dense(128, activation='relu')(combined)
-# output = Dense(y_train.shape[1], activation='softmax')(dense1)
+# Additional layers of the model
+dense1 = Dense(128, activation='relu')(combined)
+output = Dense(y_train.shape[1], activation='softmax')(dense1)
 
-# # Build the model
-# model_CNN = Model(inputs=[title_input, text_input], outputs=output)
+# Build the model
+model_CNN = Model(inputs=[title_input, text_input], outputs=output)
 
-# model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# model_CNN.summary()
+model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model_CNN.summary()
 
 # # plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
 
@@ -388,16 +388,16 @@ model_BiLSTM.summary()
 
 # model_BiLSTM.save_weights('BiLSTM_text_classification.h5')
 
-history_BiLSTM = model_BiLSTM.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# history_BiLSTM = model_BiLSTM.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-plot_training_history(history_BiLSTM, 'BiLSTM.png')
+# plot_training_history(history_BiLSTM, 'BiLSTM.png')
 # # Dự đoán trên tập validation
 # val_pred = model_BiLSTM.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
