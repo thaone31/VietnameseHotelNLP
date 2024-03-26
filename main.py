@@ -303,48 +303,48 @@ model_CNN = Model(inputs=[title_input, text_input], outputs=output)
 model_CNN.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model_CNN.summary()
 
-# # plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
+# plot_model(model_CNN, to_file='modelCNN.png', show_shapes=True, show_layer_names=True)
 
-# def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
-#     history = model.fit(
-#         [X_train['title'], X_train['text']],
-#         y_train,
-#         validation_data=([X_val['title'], X_val['text']], y_val),
-#         epochs=epochs,
-#         batch_size=batch_size
-#     )
-#     return history
+def train_model(model, X_train, y_train, X_val, y_val, epochs=EPOCHS, batch_size=4):
+    history = model.fit(
+        [X_train['title'], X_train['text']],
+        y_train,
+        validation_data=([X_val['title'], X_val['text']], y_val),
+        epochs=epochs,
+        batch_size=batch_size
+    )
+    return history
 
-# history_CNN = model_CNN.fit(
-#     [np.array(train_title_ids), np.array(train_text_ids)],
-#     y_train,
-#     epochs=EPOCHS,
-#     batch_size=4,
-#     verbose=1,
-#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-# )
-# # model_CNN.save_weights('CNNClassification.h5')
+history_CNN = model_CNN.fit(
+    [np.array(train_title_ids), np.array(train_text_ids)],
+    y_train,
+    epochs=EPOCHS,
+    batch_size=4,
+    verbose=1,
+    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+)
+model_CNN.save_weights('CNNClassification.h5')
 # plot_training_history(history_CNN, 'CNN.png')
 
-# # Dự đoán trên tập validation
-# val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
+# Dự đoán trên tập validation
+val_pred = model_CNN.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
-# # Chuyển đổi dự đoán về dạng categorical
-# val_pred_categorical = np.argmax(val_pred, axis=1)
+# Chuyển đổi dự đoán về dạng categorical
+val_pred_categorical = np.argmax(val_pred, axis=1)
 
-# # Tính các metrics
-# report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
-# print(report)
+# Tính các metrics
+report = classification_report(np.argmax(y_val, axis=1), val_pred_categorical)
+print(report)
 
-# # xây dựng hàm đánh giá
-# def test_CNN(X_test, y_test):
-#     y_pred = model_CNN.predict(X_test)
-#     pred = np.argmax(y_pred,axis=1)
+# xây dựng hàm đánh giá
+def test_CNN(X_test, y_test):
+    y_pred = model_CNN.predict(X_test)
+    pred = np.argmax(y_pred,axis=1)
 
-#     print(classification_report(y_test, pred))
+    print(classification_report(y_test, pred))
 
-# # đánh giá trên tập test
-# test_CNN([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
+# đánh giá trên tập test
+test_CNN([np.array(test_title_ids), np.array(test_text_ids)], np.array(test_labels))
 
 
 # BiLSTM
@@ -442,24 +442,24 @@ def build_ensemble_model(model_LSTM, model_CNN):
 
     return ensemble_model
 
-# Build the ensemble model
-model_ensemble_cnn_lstm = build_ensemble_model(model_LSTM, model_CNN)
-model_ensemble_cnn_lstm.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# # Build the ensemble model
+# model_ensemble_cnn_lstm = build_ensemble_model(model_LSTM, model_CNN)
+# model_ensemble_cnn_lstm.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model_ensemble_cnn_lstm.summary()
-# plot_model(model_ensemble_cnn_lstm, to_file='modelCNNLSTM.png', show_shapes=True, show_layer_names=True)
+# model_ensemble_cnn_lstm.summary()
+# # plot_model(model_ensemble_cnn_lstm, to_file='modelCNNLSTM.png', show_shapes=True, show_layer_names=True)
 
-# model_ensemble_cnn_lstm.save_weights('LSTM_CNN_text_classification.h5')
-history_LSTM_CNN = model_ensemble_cnn_lstm.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# # model_ensemble_cnn_lstm.save_weights('LSTM_CNN_text_classification.h5')
+# history_LSTM_CNN = model_ensemble_cnn_lstm.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-plot_training_history(history_LSTM_CNN, 'LSTM_CNN.png')
+# plot_training_history(history_LSTM_CNN, 'LSTM_CNN.png')
 
 # # Dự đoán trên tập validation
 # val_pred = model_ensemble_cnn_lstm.predict([np.array(val_title_ids), np.array(val_text_ids)])
@@ -506,24 +506,24 @@ def build_ensemble_model(model_BiLSTM, model_CNN):
 
     return ensemble_model
 
-# Build the ensemble model
-model_ensemble_bilstm_cnn = build_ensemble_model(model_BiLSTM, model_CNN)
-model_ensemble_bilstm_cnn.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model_ensemble_bilstm_cnn.summary()
+# # Build the ensemble model
+# model_ensemble_bilstm_cnn = build_ensemble_model(model_BiLSTM, model_CNN)
+# model_ensemble_bilstm_cnn.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# model_ensemble_bilstm_cnn.summary()
 
-# plot_model(model_ensemble_bilstm_cnn, to_file='modelBiLSTMCNN.png', show_shapes=True, show_layer_names=True)
+# # plot_model(model_ensemble_bilstm_cnn, to_file='modelBiLSTMCNN.png', show_shapes=True, show_layer_names=True)
 
-# model_ensemble_bilstm_cnn.save_weights('BiLSTM_CNN_text_classification.h5')
-history_BiLSTM_CNN = model_ensemble_bilstm_cnn.fit(
-    [np.array(train_title_ids), np.array(train_text_ids)],
-    y_train,
-    epochs=EPOCHS,
-    batch_size=4,
-    verbose=1,
-    validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
-)
+# # model_ensemble_bilstm_cnn.save_weights('BiLSTM_CNN_text_classification.h5')
+# history_BiLSTM_CNN = model_ensemble_bilstm_cnn.fit(
+#     [np.array(train_title_ids), np.array(train_text_ids)],
+#     y_train,
+#     epochs=EPOCHS,
+#     batch_size=4,
+#     verbose=1,
+#     validation_data=([np.array(val_title_ids), np.array(val_text_ids)], y_val)
+# )
 
-plot_training_history(history_BiLSTM_CNN, 'BiLSTM_CNN.png')
+# plot_training_history(history_BiLSTM_CNN, 'BiLSTM_CNN.png')
 # # Dự đoán trên tập validation
 # val_pred = model_ensemble_bilstm_cnn.predict([np.array(val_title_ids), np.array(val_text_ids)])
 
